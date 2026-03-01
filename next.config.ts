@@ -1,0 +1,29 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // Security headers applied to all routes
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          // Prevent MIME type sniffing
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Prevent clickjacking
+          { key: "X-Frame-Options", value: "DENY" },
+          // Control referrer information
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // Disable unnecessary browser features
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          // Prevent XSS attacks
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
