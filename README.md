@@ -1,187 +1,220 @@
-# Simo's Agentic Coding Boilerplate
+# Il Boilerplate Agentivo di Simo
 
-**Create webapps like Simo** — a production-ready Next.js boilerplate built for AI-assisted development with Claude Code.
+**Crea webapp come Simo** — un boilerplate Next.js production-ready costruito per lo sviluppo assistito da AI con Claude Code.
 
-## What is this?
+## Cos'è questo?
 
-A starter kit for building real web applications using AI as your coding partner. Instead of writing every line yourself, you describe what you want, and Claude Code builds it — using the patterns, security, and architecture already baked into this boilerplate.
+Un kit di partenza per costruire vere applicazioni web usando l'AI come partner di sviluppo. Invece di scrivere ogni riga da solo, descrivi cosa vuoi e Claude Code lo costruisce — usando i pattern, la sicurezza e l'architettura già integrati in questo boilerplate.
 
-**This is not a demo app.** It's the foundation you build _your_ app on.
+**Non è un'app demo.** È la fondamenta su cui costruire _la tua_ app.
 
-### What's included
+### Cosa include
 
-- **Authentication** — email/password + Google OAuth (via Better Auth)
-- **Database** — PostgreSQL with Drizzle ORM, Docker for local dev
-- **AI integration** — OpenRouter (100+ models through one API key)
-- **File storage** — local in dev, Vercel Blob in production
-- **Security** — rate limiting, input validation, security headers, auth guards
-- **Setup wizard** — interactive checklist that validates your configuration
-- **Claude Code commands** — slash commands for spec creation, GitHub integration, and phased development
+- **Autenticazione** — email/password + Google OAuth (via Better Auth)
+- **Database** — PostgreSQL con Drizzle ORM, Docker per lo sviluppo locale
+- **Integrazione AI** — OpenRouter (100+ modelli con un'unica API key)
+- **Storage file** — locale in sviluppo, Vercel Blob in produzione
+- **Sicurezza** — rate limiting, validazione input, security headers, auth guard
+- **Setup wizard** — checklist interattiva che valida la configurazione
+- **Comandi Claude Code** — slash command per creare spec, integrazione GitHub e sviluppo a fasi
 
-### Tech stack
+### Stack tecnologico
 
 Next.js 16 · React 19 · TypeScript 5.9 · Tailwind CSS 4 · shadcn/ui · Drizzle ORM · PostgreSQL · Better Auth · Vercel AI SDK · OpenRouter
 
 ---
 
-## Quick Start
+## Avvio Rapido
 
-### Prerequisites
+### Prerequisiti
 
-- [Node.js 20+](https://nodejs.org)
-- [pnpm](https://pnpm.io) (`npm install -g pnpm`)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop) (for the local database)
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (for AI-assisted development)
+- **Node.js 20+** — [nodejs.org](https://nodejs.org) o tramite un version manager
+- **pnpm** — package manager veloce ed efficiente
+- **Docker Desktop** — fa girare il database PostgreSQL in locale
+- **Claude Code** — l'assistente AI attorno a cui è costruito questo boilerplate
+
+**macOS (consigliato: usa Homebrew)**
+```bash
+brew install node                          # Node.js
+npm install -g pnpm                        # pnpm
+# Docker Desktop: scarica da docker.com/products/docker-desktop
+npm install -g @anthropic-ai/claude-code   # Claude Code
+```
+
+**Windows**
+```powershell
+# Node.js: scarica l'installer da nodejs.org
+npm install -g pnpm                        # pnpm (esegui in PowerShell)
+# Docker Desktop: scarica da docker.com/products/docker-desktop
+npm install -g @anthropic-ai/claude-code   # Claude Code
+```
+
+**Linux**
+```bash
+curl -fsSL https://fnm.vercel.app/install | bash   # installa fnm (Node version manager)
+fnm install 20                                      # Node.js 20
+npm install -g pnpm                                 # pnpm
+# Docker Desktop: vedi docs.docker.com/desktop/linux
+npm install -g @anthropic-ai/claude-code            # Claude Code
+```
+
+> **Verifica l'installazione:**
+> ```bash
+> node --version   # deve essere v20+
+> pnpm --version
+> docker --version
+> claude --version
+> ```
 
 ### Setup
 
 ```bash
-# 1. Clone and install
-git clone <your-repo-url> my-app
+# 1. Clona e installa
+git clone <url-del-tuo-repo> my-app
 cd my-app
 pnpm install
 
-# 2. Configure environment
+# 2. Configura l'ambiente
 cp env.example .env
-# Edit .env — follow the comments in the file
+# Modifica .env — segui i commenti nel file
 
-# 3. Start the database
+# 3. Avvia il database
 docker compose up -d
 
-# 4. Create database tables
+# 4. Crea le tabelle del database
 pnpm run db:migrate
 
-# 5. Start the dev server
+# 5. Avvia il server di sviluppo
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you'll see the **setup wizard** that walks you through the remaining configuration.
+Apri [http://localhost:3000](http://localhost:3000) — vedrai il **setup wizard** che ti guida attraverso la configurazione rimanente.
 
-### Start building
+### Inizia a costruire
 
-Once the setup wizard shows green checkmarks:
+Quando il setup wizard mostra tutti i check verdi:
 
 ```bash
-# Open Claude Code
+# Apri Claude Code
 claude
 
-# Describe what you want to build
+# Descrivi cosa vuoi costruire
 /create-spec
 ```
 
-Claude Code will interview you about your app, create a detailed spec, and then you can use `/continue-feature` to build it phase by phase.
+Claude Code ti intervisterà sulla tua app, creerà una spec dettagliata e poi potrai usare `/continue-feature` per costruirla fase per fase.
 
 ---
 
-## Project Structure
+## Struttura del Progetto
 
 ```
-├── .claude/commands/       # Claude Code slash commands
-│   ├── create-spec.md      # Interview → spec creation
-│   ├── publish-to-github.md # Spec → GitHub issues + project board
-│   ├── continue-feature.md  # Pick up next task and implement
-│   ├── checkpoint.md        # Create a detailed commit
-│   ├── review-pr.md         # Security + quality PR review
-│   └── deploy-check.md      # Pre-deployment validation
+├── .claude/commands/       # Slash command di Claude Code
+│   ├── create-spec.md      # Intervista → creazione spec
+│   ├── publish-to-github.md # Spec → issue GitHub + project board
+│   ├── continue-feature.md  # Prende il task successivo e lo implementa
+│   ├── checkpoint.md        # Crea un commit dettagliato
+│   ├── review-pr.md         # Review sicurezza + qualità su PR
+│   └── deploy-check.md      # Validazione pre-deploy
 ├── src/
-│   ├── app/                 # Next.js App Router pages
-│   │   ├── (auth)/          # Login, register, password reset
-│   │   ├── api/             # API routes (auth, health)
-│   │   ├── dashboard/       # Protected dashboard
-│   │   └── profile/         # User profile
-│   ├── components/          # React components
-│   │   ├── auth/            # Authentication forms
-│   │   └── ui/              # shadcn/ui components (add as needed)
-│   ├── hooks/               # Custom React hooks
-│   └── lib/                 # Core libraries
-│       ├── api-utils.ts     # API response helpers, auth/validation wrappers
-│       ├── auth.ts          # Better Auth server config
-│       ├── auth-client.ts   # Client-side auth hooks
-│       ├── db.ts            # Database connection
-│       ├── env.ts           # Environment validation + setup status
-│       ├── logger.ts        # Structured logging
-│       ├── rate-limit.ts    # Rate limiter (in-memory, per-route)
-│       ├── schema.ts        # Database schema (Drizzle)
-│       ├── session.ts       # Server-side session helpers
-│       ├── storage.ts       # File upload/delete abstraction
-│       └── utils.ts         # Utility functions
-├── CLAUDE.md                # AI assistant guidelines
-├── docker-compose.yml       # Local PostgreSQL
-├── env.example              # Environment template with docs
+│   ├── app/                 # Pagine Next.js App Router
+│   │   ├── (auth)/          # Login, register, reset password
+│   │   ├── api/             # Route API (auth, health)
+│   │   ├── dashboard/       # Dashboard protetta
+│   │   └── profile/         # Profilo utente
+│   ├── components/          # Componenti React
+│   │   ├── auth/            # Form di autenticazione
+│   │   └── ui/              # Componenti shadcn/ui (aggiungi secondo necessità)
+│   ├── hooks/               # Hook React personalizzati
+│   └── lib/                 # Librerie core
+│       ├── api-utils.ts     # Helper risposta API, wrapper auth/validazione
+│       ├── auth.ts          # Configurazione server Better Auth
+│       ├── auth-client.ts   # Hook auth lato client
+│       ├── db.ts            # Connessione database
+│       ├── env.ts           # Validazione variabili d'ambiente + stato setup
+│       ├── logger.ts        # Logging strutturato
+│       ├── rate-limit.ts    # Rate limiter (in-memory, per route)
+│       ├── schema.ts        # Schema database (Drizzle)
+│       ├── session.ts       # Helper sessione lato server
+│       ├── storage.ts       # Astrazione upload/delete file
+│       └── utils.ts         # Funzioni di utilità
+├── CLAUDE.md                # Linee guida per l'assistente AI
+├── docker-compose.yml       # PostgreSQL locale
+├── env.example              # Template variabili d'ambiente con documentazione
 └── package.json
 ```
 
 ---
 
-## Claude Code Workflow
+## Flusso di Lavoro con Claude Code
 
-This boilerplate is designed around a specific development workflow:
+Questo boilerplate è progettato attorno a un flusso di sviluppo specifico:
 
-### 1. Plan: `/create-spec`
-Claude interviews you about what you want to build, then generates a structured spec with requirements, implementation plan, and architecture decisions.
+### 1. Pianifica: `/create-spec`
+Claude ti intervista su cosa vuoi costruire, poi genera una spec strutturata con requisiti, piano di implementazione e decisioni architetturali.
 
-### 2. Publish: `/publish-to-github`
-Creates GitHub Issues for each phase and task, sets up a Project board, and caches all the IDs for fast subsequent operations.
+### 2. Pubblica: `/publish-to-github`
+Crea Issue GitHub per ogni fase e task, imposta una Project board e salva tutti gli ID per operazioni successive più veloci.
 
-### 3. Build: `/continue-feature`
-Finds the next task, loads only the relevant context (not the whole codebase), implements it, validates with lint/typecheck, commits, and updates GitHub tracking. Run it repeatedly until done.
+### 3. Costruisci: `/continue-feature`
+Trova il prossimo task, carica solo il contesto rilevante (non tutto il codebase), lo implementa, valida con lint/typecheck, fa il commit e aggiorna il tracking su GitHub. Eseguilo ripetutamente fino al completamento.
 
-### 4. Save: `/checkpoint`
-Creates a well-structured commit with detailed change descriptions.
+### 4. Salva: `/checkpoint`
+Crea un commit ben strutturato con descrizioni dettagliate delle modifiche.
 
-### 5. Review: `/review-pr`
-Runs a security + quality review on pull requests, checking for missing auth guards, rate limits, input validation, and more.
+### 5. Revisiona: `/review-pr`
+Esegue una review di sicurezza + qualità sulle pull request, verificando auth guard mancanti, rate limit, validazione input e altro.
 
-### 6. Ship: `/deploy-check`
-Pre-deployment validation — checks env vars, database connectivity, build success, and security configuration.
+### 6. Pubblica: `/deploy-check`
+Validazione pre-deploy — controlla variabili d'ambiente, connettività database, successo della build e configurazione sicurezza.
 
 ---
 
-## Configuration Guide
+## Guida alla Configurazione
 
 ### Database
 
-**Development** (Docker — runs on your machine):
+**Sviluppo** (Docker — gira sulla tua macchina):
 ```bash
-docker compose up -d                    # Start PostgreSQL
-pnpm run db:migrate                     # Apply migrations
-pnpm run db:studio                      # Open database GUI
-docker compose down                     # Stop
-docker compose down -v                  # Stop + delete all data
+docker compose up -d                    # Avvia PostgreSQL
+pnpm run db:migrate                     # Applica le migrazioni
+pnpm run db:studio                      # Apri la GUI del database
+docker compose down                     # Ferma
+docker compose down -v                  # Ferma + elimina tutti i dati
 ```
 
-**Production** (Neon — free tier available):
-1. Create a project at [neon.tech](https://neon.tech)
-2. Copy the connection string
-3. Set it as `POSTGRES_URL` in your production environment
+**Produzione** (Neon — tier gratuito disponibile):
+1. Crea un progetto su [neon.tech](https://neon.tech)
+2. Copia la stringa di connessione
+3. Impostala come `POSTGRES_URL` nel tuo ambiente di produzione
 
-### Authentication
+### Autenticazione
 
-**Email/password** works out of the box. Verification and password reset emails are logged to your terminal during development. For production, integrate an email provider (Resend, SendGrid, etc.) in `src/lib/auth.ts`.
+**Email/password** funziona subito. Le email di verifica e reset password vengono loggata nel terminale durante lo sviluppo. Per la produzione, integra un provider email (Resend, SendGrid, ecc.) in `src/lib/auth.ts`.
 
-**Google OAuth** (optional):
-1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-2. Create OAuth 2.0 credentials
-3. Set redirect URI to `http://localhost:3000/api/auth/callback/google`
-4. Add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` to `.env`
+**Google OAuth** (opzionale):
+1. Vai su [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Crea credenziali OAuth 2.0
+3. Imposta l'URI di redirect su `http://localhost:3000/api/auth/callback/google`
+4. Aggiungi `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` al tuo `.env`
 
-### AI Integration
+### Integrazione AI
 
-1. Get an API key from [OpenRouter](https://openrouter.ai/settings/keys)
-2. Add it as `OPENROUTER_API_KEY` in `.env`
-3. Browse models at [openrouter.ai/models](https://openrouter.ai/models)
-4. Set your preferred model as `OPENROUTER_MODEL` (default: `openai/gpt-4.1-mini`)
+1. Ottieni un'API key da [OpenRouter](https://openrouter.ai/settings/keys)
+2. Aggiungila come `OPENROUTER_API_KEY` nel `.env`
+3. Esplora i modelli disponibili su [openrouter.ai/models](https://openrouter.ai/models)
+4. Imposta il tuo modello preferito come `OPENROUTER_MODEL` (default: `openai/gpt-4.1-mini`)
 
-### File Storage
+### Storage File
 
-- **Development**: Files save to `public/uploads/` (gitignored)
-- **Production**: Set `BLOB_READ_WRITE_TOKEN` from Vercel Dashboard → Storage → Blob
+- **Sviluppo**: i file vengono salvati in `public/uploads/` (ignorato da git)
+- **Produzione**: imposta `BLOB_READ_WRITE_TOKEN` da Vercel Dashboard → Storage → Blob
 
 ---
 
-## API Patterns
+## Pattern API
 
-Every API route in this project follows the same structure. This makes them predictable and secure:
+Ogni route API in questo progetto segue la stessa struttura. Questo le rende prevedibili e sicure:
 
 ```typescript
 import { apiResponse, apiError, requireApiAuth, applyRateLimit, parseBody } from "@/lib/api-utils";
@@ -201,75 +234,115 @@ export async function POST(req: Request) {
   const { session, error } = await requireApiAuth();
   if (error) return error;
 
-  // 3. Validate
+  // 3. Validazione
   const { data, error: parseErr } = await parseBody(req, mySchema);
   if (parseErr) return parseErr;
 
-  // 4. Do work
+  // 4. Logica
   return apiResponse({ result: "ok" });
 }
 ```
 
 ---
 
-## Adding shadcn/ui Components
+## Aggiungere Componenti shadcn/ui
 
 ```bash
 pnpm dlx shadcn@latest add button
 pnpm dlx shadcn@latest add input
 pnpm dlx shadcn@latest add card
-# etc.
+# ecc.
 ```
 
-Components install to `src/components/ui/`. They're pre-configured for dark mode and the project's theme.
+I componenti vengono installati in `src/components/ui/`. Sono pre-configurati per la dark mode e il tema del progetto.
 
 ---
 
-## Scripts
+## Script
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `pnpm dev` | Start dev server (Turbopack) |
-| `pnpm build` | Production build (runs migrations first) |
-| `pnpm lint` | Run ESLint |
-| `pnpm typecheck` | Run TypeScript checking |
-| `pnpm check` | Run both lint + typecheck |
-| `pnpm db:generate` | Generate migration files |
-| `pnpm db:migrate` | Apply migrations |
-| `pnpm db:push` | Push schema directly (dev shortcut) |
-| `pnpm db:studio` | Open Drizzle Studio |
-| `pnpm db:reset` | Drop and recreate tables |
+| `pnpm dev` | Avvia il server di sviluppo (Turbopack) |
+| `pnpm build` | Build di produzione (esegue le migrazioni prima) |
+| `pnpm lint` | Esegui ESLint |
+| `pnpm typecheck` | Controllo TypeScript |
+| `pnpm check` | Esegui lint + typecheck insieme |
+| `pnpm db:generate` | Genera i file di migrazione |
+| `pnpm db:migrate` | Applica le migrazioni |
+| `pnpm db:push` | Push schema diretto (scorciatoia dev) |
+| `pnpm db:studio` | Apri Drizzle Studio |
+| `pnpm db:reset` | Elimina e ricrea le tabelle |
+| `pnpm test:e2e` | Esegui i test E2E in modalità headless |
+| `pnpm test:e2e:ui` | Apri l'UI interattiva di Playwright |
+| `pnpm test:e2e:headed` | Esegui i test con il browser visibile |
 
 ---
 
-## Deployment
+## Test E2E (Playwright)
 
-### Vercel (recommended)
+I test sono **su richiesta** — non vengono mai eseguiti automaticamente durante la build. Eseguili quando vuoi verificare che una funzionalità funzioni end-to-end.
 
-1. Push to GitHub
-2. Import in [Vercel](https://vercel.com)
-3. Add environment variables (from `.env`, using production values)
+### Setup iniziale
+
+```bash
+pnpm install
+pnpm exec playwright install chromium   # scarica il browser per i test
+```
+
+### Eseguire i test
+
+```bash
+pnpm test:e2e           # headless (stile CI)
+pnpm test:e2e:ui        # UI interattiva — ottima per il debug
+pnpm test:e2e:headed    # guarda il browser mentre i test girano
+```
+
+I test riutilizzano il server di sviluppo già in esecuzione. Avvialo prima con `pnpm dev`, poi esegui i test in un altro terminale.
+
+### Scrivere test
+
+Aggiungi nuovi file di test in `e2e/`. Un file per area funzionale. Da Claude Code:
+
+```bash
+/test-e2e
+```
+
+Questo esegue l'intera suite e corregge gli eventuali errori. Per scrivere test per una nuova funzionalità, chiedi: _"Scrivi i test E2E per il flusso di [funzionalità]."_
+
+### Test inclusi
+
+- `e2e/auth.spec.ts` — le pagine login/register si caricano, gli auth guard reindirizzano gli utenti non autenticati, il flusso di registrazione funziona
+
+---
+
+## Deploy
+
+### Vercel (consigliato)
+
+1. Fai push su GitHub
+2. Importa su [Vercel](https://vercel.com)
+3. Aggiungi le variabili d'ambiente (da `.env`, usando i valori di produzione)
 4. Deploy
 
-The `pnpm build` script runs `db:migrate` automatically before building.
+Lo script `pnpm build` esegue `db:migrate` automaticamente prima della build.
 
-### Pre-deployment checklist
+### Checklist pre-deploy
 
-Run `/deploy-check` in Claude Code, or manually verify:
-- [ ] `BETTER_AUTH_SECRET` is a real random string (not the default)
-- [ ] `POSTGRES_URL` points to your production database
-- [ ] `NEXT_PUBLIC_APP_URL` is your real domain
-- [ ] `pnpm build` completes without errors
-- [ ] Email provider configured (if using email auth)
-
----
-
-## Inspired by
-
-This project is inspired by [Leon van Zyl's Agentic Coding Starter Kit](https://github.com/leonvanzyl/agentic-coding-starter-kit). Built with a focus on guided onboarding, security-first architecture, and optimized Claude Code workflows.
+Esegui `/deploy-check` in Claude Code, o verifica manualmente:
+- [ ] `BETTER_AUTH_SECRET` è una stringa casuale reale (non quella di default)
+- [ ] `POSTGRES_URL` punta al database di produzione
+- [ ] `NEXT_PUBLIC_APP_URL` è il tuo dominio reale
+- [ ] `pnpm build` si completa senza errori
+- [ ] Provider email configurato (se usi l'autenticazione via email)
 
 ---
 
-## License
+## Ispirato da
+
+Questo progetto è ispirato all'[Agentic Coding Starter Kit di Leon van Zyl](https://github.com/leonvanzyl/agentic-coding-starter-kit). Costruito con un focus su onboarding guidato, architettura security-first e flussi di lavoro ottimizzati per Claude Code.
+
+---
+
+## Licenza
 
 MIT

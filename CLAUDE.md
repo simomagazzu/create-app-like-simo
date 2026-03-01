@@ -49,6 +49,11 @@ Use this to decide which files to read for a given task. **Don't load everything
 - `src/components/` — app-level components
 - `src/app/globals.css` — theme + Tailwind setup
 
+### E2E Testing
+- `playwright.config.ts` — Playwright config (baseURL, browser, webServer)
+- `e2e/` — all E2E test files (one file per feature area)
+- Run via `/test-e2e` command or `pnpm test:e2e` directly
+
 ## Critical Rules
 
 ### 1. Always run checks after changes
