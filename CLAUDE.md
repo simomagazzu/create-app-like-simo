@@ -152,6 +152,15 @@ await deleteFile(result.url);
 - Input validation (via `parseBody` with a Zod schema)
 - Proper error responses (via `apiError`)
 
+### 10. Reuse components — don't reinvent them
+Before writing any UI, check what already exists:
+1. **shadcn/ui first** — if a component exists in `src/components/ui/`, use it. Install missing ones with `pnpm dlx shadcn@latest add <name>` rather than building from scratch.
+2. **App components second** — check `src/components/` for existing app-level components before creating new ones.
+3. **Extract, don't duplicate** — if the same UI pattern appears more than once, extract it into a reusable component in `src/components/`.
+4. **Extend, don't fork** — if an existing component almost fits, add a prop to it. Don't copy-paste and modify.
+
+Writing the same UI twice is always wrong. A new `<div>` where a `<Button>` or `<Card>` would do is always wrong.
+
 ## Available Scripts
 
 ```bash

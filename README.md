@@ -68,23 +68,37 @@ npm install -g @anthropic-ai/claude-code            # Claude Code
 
 ### Setup
 
+**1. Crea una cartella con il nome della tua app**
+
+**Opzione A — Terminale:**
 ```bash
-# 1. Clona e installa
-git clone <url-del-tuo-repo> my-app
-cd my-app
+mkdir nome-della-tua-app   # es. todo-app, my-saas, ecc.
+cd nome-della-tua-app
+code .
+```
+
+**Opzione B — Manuale:**
+1. Crea una cartella e chiamala come la tua app (es. `todo-app`, `my-saas`, ecc.)
+2. Aprila in VS Code (File → Apri Cartella)
+
+**2. Clona il boilerplate nella cartella aperta**
+
+```bash
+# Nel terminale integrato di VS Code
+git clone https://github.com/simomagazzu/create-app-like-simo.git .
 pnpm install
 
-# 2. Configura l'ambiente
+# 3. Configura l'ambiente
 cp env.example .env
 # Modifica .env — segui i commenti nel file
 
-# 3. Avvia il database
+# 4. Avvia il database
 docker compose up -d
 
-# 4. Crea le tabelle del database
+# 5. Crea le tabelle del database
 pnpm run db:migrate
 
-# 5. Avvia il server di sviluppo
+# 6. Avvia il server di sviluppo
 pnpm dev
 ```
 
