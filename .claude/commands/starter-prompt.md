@@ -25,6 +25,24 @@ When Phase 2 is complete you will have created:
 
 ---
 
+## Phase 1.2: Design Deep-Dive
+
+Run these questions immediately after the main Phase 1 interview, before moving to Phase 1.5 Research. If any were already answered naturally during the interview, skip them — do not ask twice.
+
+Ask each question conversationally, one at a time:
+
+1. **Reference apps** — "Show me 2–3 apps whose design you want to emulate — screenshots, URLs, or just names."
+2. **Density** — "Should this feel information-dense (like Linear or Notion) or spacious and minimal (like the Vercel or Stripe dashboard)?"
+3. **Primary action** — "What is the single most important action a user takes in the app? How prominent should it be?"
+4. **Navigation pattern** — "Sidebar, top nav, or bottom nav? Should it collapse on mobile?"
+5. **Data display** — "Are there tables, card grids, or lists of items? Roughly how many columns? Should they be sortable or filterable?"
+6. **Empty states** — "What should the app show when there's no data yet — an illustration, a call-to-action, placeholder text?"
+7. **Color and mode** — "One accent color or a full palette? Any specific hex codes or brand colors to lock in? Dark mode, light mode, or system?"
+
+Record all answers — they feed directly into the `## Design System` and `## Key Screens` sections of the starter-prompt document.
+
+---
+
 ## Phase 2.5: Generate Starter Prompt Document
 
 Create `docs/business/` if it doesn't exist: `mkdir -p docs/business`
@@ -36,6 +54,16 @@ Write `docs/business/starter-prompt.md` using everything gathered in the intervi
 
 > Paste this file into any new Claude session to restore full context about this project instantly.
 
+## ⚠ Critical Build Constraints
+
+1. Routes `/`, `/dashboard`, `/chat` are boilerplate — **fully replace their contents**, never append to them
+2. Never use Lorem Ipsum or placeholder text like "Coming soon" in any deliverable screen
+3. Every screen that shows a list or table **must** have a real empty state implemented, not a blank box
+4. The first build must be visually complete — no "I'll style this later" stubs or unstyled sections
+5. Do not use the default shadcn gray card-with-title layout as a stand-in for real UI
+
+---
+
 ## What This App Does
 {one sentence from interview — the problem it solves}
 
@@ -46,15 +74,43 @@ Write `docs/business/starter-prompt.md` using everything gathered in the intervi
 {login methods — signup policy (open or invite-only) — what the user sees on first login}
 
 ## Key Screens
-{from interview question 6 — list each screen with a one-line description}
-- Pre-login: {landing page or straight to login}
-- {Screen}: {what's on it}
+
+{For each screen identified in the interview, fill out this block:}
+
+### Pre-login
+- Layout: {e.g. "centered single-column, max-w-md"}
+- Primary element: {e.g. "email + password form with Google OAuth button below"}
+- Empty/unauthenticated state: {e.g. "redirect to /login — no flash of content"}
+
+### {Screen name}
+- Layout: {e.g. "two-col — sidebar 240px fixed left + main area scrollable"}
+- Primary element: {e.g. "table of invoices with status badge column"}
+- Secondary elements: {e.g. "filter bar at top, summary stat cards above table"}
+- Empty state: {e.g. "centered illustration + 'Create your first invoice' CTA button"}
+- Mobile behavior: {e.g. "sidebar collapses to hamburger, table becomes card list"}
+
+{Repeat block for each screen}
 
 ## Core Features
 {numbered list from requirements.md — specific, not vague}
 
-## Design Direction
-{paste the ## Design Direction section from requirements.md verbatim — aesthetic, colors, tone, dark/light mode, reference apps}
+## Design System
+
+**Layout**: {sidebar / top-nav / bottom-nav} · {fixed / scrollable shell} · {max-width constraint, e.g. max-w-7xl}
+**Density**: {compact / balanced / spacious}
+**Accent color**: {hex or description} · **Mode**: {dark / light / system}
+**Border radius**: {sharp (rounded-sm) / standard (rounded-md) / soft (rounded-xl) / pill}
+**Typography scale**: {tight / default / loose}
+**Reference apps**: {names or URLs from interview — what to emulate}
+**Tone**: {e.g. "professional and calm, no playful microcopy"}
+
+### Component Conventions
+- **Forms**: {modal / slide-over panel / inline / dedicated page}
+- **Confirmation dialogs**: {destructive actions only / always}
+- **Loading states**: {skeleton screens / spinners / optimistic updates}
+- **Notifications**: {toast — position: top-right / bottom-center — use for: {when}}
+- **Tables**: {paginated / infinite scroll} · {row actions: dropdown menu / inline buttons}
+- **Navigation**: {items, icons if any, active state style}
 
 ## Integrations
 {third-party services used, or "None"}
@@ -101,19 +157,55 @@ Present them inline — do not say "go read the file". List each step and ask th
 
 **If it has "After deploying" steps:** mention them briefly ("There are also a couple of steps only possible after deploying — I'll remind you then.") but do not block on them.
 
-**If no manual steps:** skip this and proceed immediately.
+**If no manual steps:** skip this and proceed to Phase 3.5.
+
+---
+
+## Phase 3.5: Design Alignment Check
+
+Before writing any code, output a short **UI spec summary** for the user to approve. This is mandatory — do not skip it even if the design feels clear.
+
+Format it as:
+
+> Here's how I'm planning to build the UI before I start:
+>
+> - **Shell**: {nav pattern and behavior — e.g. "fixed sidebar 240px, collapses to icon-only on mobile"}
+> - **{Screen 1 name}**: {layout + key components — e.g. "full-width table with filter bar above, empty state is centered CTA"}
+> - **{Screen 2 name}**: {layout + key components}
+> - **Forms**: {where they live — e.g. "slide-over panel on the right"}
+> - **Loading / empty states**: {approach — e.g. "skeleton on initial load, optimistic updates on mutations"}
+> - **Component choices**: {notable shadcn components or custom ones — e.g. "DataTable with TanStack, Sheet for slide-overs, Sonner for toasts"}
+>
+> Does this match your vision, or should I adjust anything before I start?
+
+**Wait for explicit approval.** If the user says "looks good" or equivalent, proceed to Phase 4. If they request changes, update `docs/business/starter-prompt.md` to reflect them before building.
 
 ---
 
 ## Phase 4: Build
 
-Once manual steps are acknowledged (or there are none), say:
+Once the design alignment is approved, say:
 
 > Building now — I'll work through all phases automatically.
 
 Then follow the orchestration from `.claude/commands/continue-feature.md`.
 
 **Use parallel wave execution**: spawn all tasks in the current wave simultaneously. Wait for all to complete before moving to the next wave.
+
+### Build Quality Gates
+
+After completing **each wave**, self-check every item before marking the wave done. Do not proceed to the next wave if any item fails.
+
+- [ ] No default shadcn placeholder content or boilerplate copy is visible anywhere
+- [ ] Empty states are implemented for every list, table, or feed view
+- [ ] Loading states exist on all async operations (skeletons or spinners — no blank flashes)
+- [ ] All destructive actions have a confirmation dialog
+- [ ] Error states are handled and shown to the user — not just the happy path
+- [ ] No screen is wider than its intended max-width constraint on desktop
+- [ ] Nothing overflows or breaks at 375px viewport width on mobile
+- [ ] Spacing is consistent — no mixed arbitrary margin/padding values across equivalent components
+- [ ] Navigation active state is correct on all routes
+- [ ] Forms validate inputs and show inline errors before submission
 
 When all tasks across all phases are complete, continue-feature will generate one `docs/features/{slug}.md` per unique feature tag and print the final report.
 
