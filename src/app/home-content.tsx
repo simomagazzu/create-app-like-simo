@@ -540,16 +540,22 @@ export default function HomeContent() {
                 (lascia tutte le opzioni di default, non aggiungere README o .gitignore),
                 poi incolla qui l&apos;URL del repo:
               </Hint>
-              <input
-                type="text"
-                placeholder="https://github.com/username/repo.git"
-                value={repoUrl}
-                onChange={(e) => {
-                  setRepoUrl(e.target.value);
-                  persist({ repoUrl: e.target.value });
-                }}
-                className="w-full rounded-md border border-border bg-muted px-3 py-1.5 font-mono text-xs placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
-              />
+              <div className="space-y-1.5">
+                <label htmlFor="repo-url" className="text-xs font-medium text-foreground">
+                  URL del repository
+                </label>
+                <input
+                  id="repo-url"
+                  type="text"
+                  placeholder="https://github.com/username/nome-repo.git"
+                  value={repoUrl}
+                  onChange={(e) => {
+                    setRepoUrl(e.target.value);
+                    persist({ repoUrl: e.target.value });
+                  }}
+                  className="w-full rounded-md border-2 border-border bg-background px-3 py-2 font-mono text-sm placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground focus:ring-1 focus:ring-ring transition-colors"
+                />
+              </div>
               {repoUrl && (
                 <div className="space-y-2">
                   <Hint>2. Esegui questi comandi nel terminale:</Hint>
@@ -571,17 +577,19 @@ export default function HomeContent() {
         {allReady && (
           <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-5 space-y-3">
             <p className="text-sm font-medium text-green-600 dark:text-green-400">
-              Tutto pronto. Apri un nuovo terminale in VS Code e scrivi:
+              Tutto pronto! Ora puoi iniziare a costruire la tua app.
             </p>
-            <div className="flex flex-col gap-2">
-              <CopyButton text="claude" />
-              <Hint>
-                Dentro Claude Code scrivi{" "}
-                <code className="bg-muted px-1 rounded">/starter-prompt</code>{" "}
-                — Claude ti farà delle domande su cosa vuoi costruire e poi
-                creerà la tua app automaticamente.
-              </Hint>
-            </div>
+            <p className="text-muted-foreground text-xs">
+              Apri la chat di Claude Code (la trovi nella barra laterale di VS
+              Code, oppure premi{" "}
+              <code className="bg-muted px-1 rounded">Cmd + Shift + P</code> e
+              cerca &quot;Claude&quot;). Poi scrivi:
+            </p>
+            <CopyButton text="/starter-prompt" />
+            <Hint>
+              Claude ti farà delle domande su cosa vuoi costruire, poi creerà la
+              tua app automaticamente.
+            </Hint>
           </div>
         )}
 

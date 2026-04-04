@@ -46,7 +46,17 @@ Questi strumenti vanno installati **una sola volta**. Una volta completato quest
 
 > **Come funziona il terminale**: incolli un comando, premi `Invio`, e aspetti. Sai che ha finito quando ricompare la riga con il tuo nome utente (es. `mario@MacBook %`). A quel punto puoi incollare il comando successivo. Non serve aprire un nuovo terminale tra un comando e l'altro, a meno che non sia indicato esplicitamente.
 
-> **Windows**: questo template è pensato per Mac. Su Windows, installa prima [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) (Ubuntu), poi segui le istruzioni Linux dentro WSL.
+> **Windows**: installa prima [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) (Ubuntu). Apri il terminale Ubuntu e segui le istruzioni qui sotto, sostituendo i comandi Homebrew con quelli indicati per Linux/WSL.
+>
+> | Strumento | Comando Windows/WSL |
+> |---|---|
+> | Homebrew | Non serve — usa `apt` |
+> | Git | `sudo apt update && sudo apt install git` |
+> | Node.js | `curl -fsSL https://deb.nodesource.com/setup_22.x \| sudo -E bash - && sudo apt install -y nodejs` |
+> | pnpm | `sudo npm install -g pnpm` (uguale) |
+> | Docker Desktop | Scarica la versione Windows da [docker.com](https://www.docker.com/products/docker-desktop/), abilita l'integrazione WSL nelle impostazioni |
+> | VS Code | Scarica la versione Windows da [code.visualstudio.com](https://code.visualstudio.com/), installa l'estensione **WSL** per lavorare dentro Ubuntu |
+> | Claude Code | `sudo npm install -g @anthropic-ai/claude-code` (uguale) |
 
 ### 1. Apri il Terminale
 
@@ -77,6 +87,15 @@ brew install git
 ```
 
 Durata: circa 1 minuto. **Fatto quando**: ricompare la riga col tuo nome utente. Verifica con `git --version`.
+
+**Configura il tuo nome e email** — Git li usa per firmare ogni modifica che fai. Usa lo stesso nome e email del tuo account GitHub (se non hai ancora un account GitHub, creane uno su [github.com](https://github.com) — ti servirà dopo):
+
+```bash
+git config --global user.name "Il Tuo Nome"
+git config --global user.email "la-tua-email@esempio.com"
+```
+
+Questi comandi non danno nessun output — è normale. Devi farlo **una volta sola**, vale per tutti i progetti futuri.
 
 ### 4. Node.js
 
@@ -198,13 +217,17 @@ pnpm install
 
 Scarica tutte le librerie che il progetto usa. Durata: 1–2 minuti. Vedrai molto testo — è normale. Aspetta finché non ricompare la riga col tuo nome utente.
 
-### 5. Crea il file di configurazione
+### 5. Crea il file di configurazione (.env)
+
+Il file `.env` è il posto dove la tua app tiene tutte le informazioni segrete: password del database, chiavi API, impostazioni di sicurezza. Si chiama "environment" (ambiente) perché cambia a seconda di dove gira l'app — in locale sul tuo computer avrai certi valori, in produzione altri.
+
+Questo file **non viene mai caricato su GitHub** (è già escluso da `.gitignore`) — rimane solo sul tuo computer. Per questo motivo il template include un file di esempio (`env.example`) con valori segnaposto che devi copiare e poi personalizzare.
 
 ```bash
 cp env.example .env
 ```
 
-Questo copia un file di esempio con tutte le impostazioni della tua app. Senza questo file il server non parte. Non vedrai nessun output — è normale, il comando funziona in silenzio.
+Non vedrai nessun output — è normale, il comando funziona in silenzio. Ora hai un file `.env` con valori di partenza già pronti. La guida interattiva su localhost ti accompagnerà nel riempirlo passo per passo.
 
 ### 6. Avvia Docker Desktop
 
