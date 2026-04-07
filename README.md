@@ -10,7 +10,19 @@ Tool come Lovable, Replit e ambienti simili sono ottimi per iniziare. Permettono
 
 Il problema è che spesso ti ritrovi a costruire cose da developer senza capire davvero cosa sta succedendo sotto il cofano. Il codice esiste, ma non è davvero tuo. Non sai bene come è organizzato, non sai come ottimizzarlo, e non sai come intervenire quando vuoi fare qualcosa di più avanzato.
 
-Questo boilerplate nasce per fare un passaggio preciso: passare da tool come Lovable o Replit a costruire applicazioni con gli stessi strumenti dei developer, ma con una guida chiara. Non devi partire da zero, non devi affrontare da solo la complessità. Puoi costruire quello che vuoi, capendo cosa sta succedendo e mantenendo il controllo su ogni passaggio.
+Questo boilerplate nasce per fare un passaggio preciso: passare da tool come Lovable o Replit a costruire applicazioni con gli stessi strumenti dei developer, ma con una guida chiara.
+
+**La cosa che lo rende diverso dagli altri template**: risolve il problema classico di Claude Code; più la sessione va avanti, più Claude perde il filo, inizia a contraddirsi e introduce bug che non c'erano.
+
+Il motivo è l'accumulo di contesto. Questo template lo risolve alla radice con un'architettura multi-agente:
+
+- **Orchestratore**; legge la spec, coordina i task, non accumula contesto operativo
+- **Sotto-agenti**; ognuno riceve un brief preciso, esegue un task in isolamento con 200k token freschi, poi chiude
+- **Design system**; la direzione visiva viene estratta dai requisiti e iniettata in ogni brief UI, così lo stile rimane coerente tra un agente e l'altro
+
+Il processo scatta in automatico solo quando serve; per task importanti e strutturati. Per modifiche semplici, Claude lavora direttamente senza overhead.
+
+Il risultato: il codice rimane preciso e consistente dall'inizio alla fine del progetto, anche quando cresce.
 
 ---
 
@@ -36,7 +48,6 @@ Autenticazione, database, AI, UI e sicurezza sono già configurati. Parti subito
 | **UI** | shadcn/ui + Tailwind 4 + dark mode |
 | **Sicurezza** | Rate limiting, CSP, validazione input, path traversal protection |
 | **Storage** | Locale in dev, Vercel Blob in produzione |
-| **Test** | Playwright E2E |
 
 ---
 
@@ -46,27 +57,19 @@ Questi strumenti vanno installati **una sola volta**. Una volta completato quest
 
 > **Come funziona il terminale**: incolli un comando, premi `Invio`, e aspetti. Sai che ha finito quando ricompare la riga con il tuo nome utente (es. `mario@MacBook %`). A quel punto puoi incollare il comando successivo. Non serve aprire un nuovo terminale tra un comando e l'altro, a meno che non sia indicato esplicitamente.
 
-> **Windows**: installa prima [WSL 2](https://learn.microsoft.com/en-us/windows/wsl/install) (Ubuntu). Apri il terminale Ubuntu e segui le istruzioni qui sotto, sostituendo i comandi Homebrew con quelli indicati per Linux/WSL.
->
-> | Strumento | Comando Windows/WSL |
-> |---|---|
-> | Homebrew | Non serve — usa `apt` |
-> | Git | `sudo apt update && sudo apt install git` |
-> | Node.js | `curl -fsSL https://deb.nodesource.com/setup_22.x \| sudo -E bash - && sudo apt install -y nodejs` |
-> | pnpm | `sudo npm install -g pnpm` (uguale) |
-> | Docker Desktop | Scarica la versione Windows da [docker.com](https://www.docker.com/products/docker-desktop/), abilita l'integrazione WSL nelle impostazioni |
-> | VS Code | Scarica la versione Windows da [code.visualstudio.com](https://code.visualstudio.com/), installa l'estensione **WSL** per lavorare dentro Ubuntu |
-> | Claude Code | `sudo npm install -g @anthropic-ai/claude-code` (uguale) |
+Segui le istruzioni per il tuo sistema operativo:
 
-### 1. Apri il Terminale
+---
+
+### Se usi Mac
+
+#### 1. Apri il Terminale
 
 Premi `Cmd + Spazio`, scrivi **Terminale**, premi `Invio`. Si apre una finestra con sfondo scuro e testo bianco — è qui che eseguirai tutti i comandi.
 
-### 2. Homebrew
+#### 2. Homebrew
 
 **Cos'è**: il "negozio" che ti permette di installare programmi da terminale con un solo comando. Senza Homebrew dovresti scaricare ogni tool manualmente.
-
-Incolla questo comando e premi `Invio`:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -78,7 +81,7 @@ Incolla questo comando e premi `Invio`:
 
 **Come sai che ha funzionato**: chiudi il terminale, riaprilo, e scrivi `brew --version`. Se vedi un numero di versione, è tutto ok.
 
-### 3. Git
+#### 3. Git
 
 **Cos'è**: il sistema che salva la cronologia del tuo codice. Ogni modifica viene registrata, e puoi sempre tornare a una versione precedente.
 
@@ -88,16 +91,16 @@ brew install git
 
 Durata: circa 1 minuto. **Fatto quando**: ricompare la riga col tuo nome utente. Verifica con `git --version`.
 
-**Configura il tuo nome e email** — Git li usa per firmare ogni modifica che fai. Usa lo stesso nome e email del tuo account GitHub (se non hai ancora un account GitHub, creane uno su [github.com](https://github.com) — ti servirà dopo):
+**Configura il tuo nome e email** (usa gli stessi del tuo account GitHub):
 
 ```bash
 git config --global user.name "Il Tuo Nome"
 git config --global user.email "la-tua-email@esempio.com"
 ```
 
-Questi comandi non danno nessun output — è normale. Devi farlo **una volta sola**, vale per tutti i progetti futuri.
+Questi comandi non danno nessun output — è normale. Devi farlo **una volta sola**, vale per tutti i progetti futuri. Se non hai ancora un account GitHub, creane uno su [github.com](https://github.com) — ti servirà dopo.
 
-### 4. Node.js
+#### 4. Node.js
 
 **Cos'è**: il motore che esegue il codice della tua app. Senza Node.js, il computer non sa come leggere il codice che scrivi.
 
@@ -105,9 +108,9 @@ Questi comandi non danno nessun output — è normale. Devi farlo **una volta so
 brew install node
 ```
 
-Durata: circa 2 minuti. **Fatto quando**: ricompare la riga col tuo nome utente. Verifica con `node --version` — deve mostrare v18 o superiore.
+Durata: circa 2 minuti. Verifica con `node --version` — deve mostrare v18 o superiore.
 
-### 5. pnpm
+#### 5. pnpm
 
 **Cos'è**: il gestore delle librerie. La tua app usa centinaia di pezzi di codice scritti da altri (pulsanti, connessione al database, ecc.). pnpm li scarica e li tiene aggiornati.
 
@@ -115,13 +118,11 @@ Durata: circa 2 minuti. **Fatto quando**: ricompare la riga col tuo nome utente.
 sudo npm install -g pnpm
 ```
 
-Ti chiederà la password del Mac (come per Homebrew, non vedrai niente mentre scrivi). Durata: pochi secondi. Verifica con `pnpm --version`.
+Ti chiederà la password del Mac. Verifica con `pnpm --version`.
 
-### 6. Docker Desktop
+#### 6. Docker Desktop
 
 **Cos'è**: Docker fa girare un database sul tuo computer senza che tu debba installare o configurare PostgreSQL manualmente. Pensalo come una "scatola" che contiene il database già pronto.
-
-Questo è l'unico strumento che **non** si installa da terminale:
 
 1. Vai su [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
 2. Scarica la versione per il tuo Mac (Apple Silicon o Intel — se non sai quale hai: menu Mela → Informazioni su questo Mac)
@@ -132,7 +133,7 @@ Questo è l'unico strumento che **non** si installa da terminale:
 
 Verifica nel terminale: `docker --version`
 
-### 7. Visual Studio Code
+#### 7. Visual Studio Code
 
 **Cos'è**: l'editor dove vedrai e modificherai il codice. È gratuito ed è lo standard usato dalla maggior parte dei developer.
 
@@ -152,15 +153,13 @@ VS Code ha un terminale integrato — funziona esattamente come il Terminale del
 
 7. Apri il terminale integrato: menu **Terminal → New Terminal** (oppure `` Ctrl + ` ``)
 
-Da questo momento puoi usare questo terminale per tutti i comandi del progetto. Non serve più quello del Mac.
+Da questo momento puoi usare questo terminale per tutti i comandi del progetto.
 
-### 8. Claude Code
+#### 8. Claude Code
 
 **Cos'è**: l'AI che costruirà la tua app insieme a te. Tu descrivi cosa vuoi, Claude scrive il codice.
 
 Serve uno di questi: un piano [Anthropic Max o Pro](https://claude.ai), una [API key Anthropic](https://console.anthropic.com/), oppure un accesso tramite team o azienda.
-
-Nel terminale di VS Code:
 
 ```bash
 sudo npm install -g @anthropic-ai/claude-code
@@ -170,13 +169,83 @@ Durata: circa 30 secondi. Verifica con `claude --version`.
 
 ---
 
-> **Qualcosa non funziona?** Se un comando dà errore, copia l'intero messaggio di errore e incollalo su [claude.ai](https://claude.ai) (o ChatGPT) con questo prompt:
->
-> *"Sto configurando un progetto Node.js su Mac. Ho eseguito questo comando: `[incolla il comando]` e ho ottenuto questo errore: `[incolla l'errore]`. Mi guidi passo passo per risolverlo?"*
->
-> Funziona per qualsiasi errore in questa guida. Non serve capire l'errore — basta copiarlo.
+### Se usi Windows
 
-> **Tutto installato?** Questi 8 passaggi non dovrai più ripeterli. Da qui in poi, ogni volta che vuoi lavorare al progetto ti basta aprire il terminale e Docker Desktop.
+Prima di tutto, installa **WSL 2** (Windows Subsystem for Linux): segui la [guida ufficiale Microsoft](https://learn.microsoft.com/en-us/windows/wsl/install), scegli Ubuntu come distribuzione. WSL ti permette di usare un ambiente Linux dentro Windows — tutti i tool qui sotto vanno installati dentro Ubuntu, non nel terminale Windows classico.
+
+Apri il terminale Ubuntu e procedi con questi passaggi:
+
+#### 1. Apri il terminale Ubuntu
+
+Cerca "Ubuntu" nel menu Start. Si apre una finestra con sfondo scuro — è qui che eseguirai tutti i comandi.
+
+#### 2. Git
+
+```bash
+sudo apt update && sudo apt install git
+```
+
+Verifica con `git --version`, poi configura nome e email (usa gli stessi del tuo account GitHub):
+
+```bash
+git config --global user.name "Il Tuo Nome"
+git config --global user.email "la-tua-email@esempio.com"
+```
+
+#### 3. Node.js
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs
+```
+
+Verifica con `node --version` — deve mostrare v18 o superiore.
+
+#### 4. pnpm
+
+```bash
+sudo npm install -g pnpm
+```
+
+Verifica con `pnpm --version`.
+
+#### 5. Docker Desktop
+
+1. Scarica Docker Desktop per Windows da [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+2. Durante l'installazione, assicurati di selezionare **"Use WSL 2 instead of Hyper-V"**
+3. Apri Docker Desktop → Settings → Resources → WSL Integration → abilita la tua distribuzione Ubuntu
+4. Riavvia Docker Desktop
+
+**Importante**: Docker Desktop deve essere **aperto e in esecuzione** ogni volta che lavori al progetto.
+
+Verifica nel terminale Ubuntu: `docker --version`
+
+#### 6. Visual Studio Code
+
+1. Scarica VS Code per Windows da [code.visualstudio.com](https://code.visualstudio.com/)
+2. Installa l'estensione **WSL** (cerca "WSL" nel marketplace delle estensioni) — ti permette di aprire cartelle Linux dentro VS Code
+3. Installa l'estensione **Claude Code** (cerca "Claude Code" nel marketplace)
+
+Per aprire il terminale integrato: menu **Terminal → New Terminal** (oppure `` Ctrl + ` ``). Assicurati che il terminale sia Ubuntu/WSL, non PowerShell.
+
+#### 7. Claude Code
+
+Serve uno di questi: un piano [Anthropic Max o Pro](https://claude.ai), una [API key Anthropic](https://console.anthropic.com/), oppure un accesso tramite team o azienda.
+
+Nel terminale Ubuntu:
+
+```bash
+sudo npm install -g @anthropic-ai/claude-code
+```
+
+Verifica con `claude --version`.
+
+---
+
+> **Qualcosa non funziona?** Se un comando dà errore, copia l'intero messaggio di errore e incollalo su [claude.ai](https://claude.ai) con questo prompt:
+>
+> *"Sto configurando un progetto Node.js su [Mac / Windows con WSL]. Ho eseguito questo comando: `[incolla il comando]` e ho ottenuto questo errore: `[incolla l'errore]`. Mi guidi passo passo per risolverlo?"*
+
+> **Tutto installato?** Questi passaggi non dovrai più ripeterli. Da qui in poi, ogni volta che vuoi lavorare al progetto ti basta aprire il terminale e Docker Desktop.
 
 ---
 
@@ -188,10 +257,9 @@ Questi passaggi creano il tuo progetto e aprono una guida interattiva che ti acc
 
 Crea una cartella sul tuo computer dove terrai tutti i progetti web — ad esempio sul Desktop:
 
-1. Apri il **Finder**
-2. Vai sul **Desktop** (o dove preferisci)
-3. Crea una nuova cartella chiamata **Progetti** (se non ce l'hai già)
-4. Dentro **Progetti**, crea un'altra cartella con il nome della tua app (es. `la-mia-app`)
+1. Apri il **Finder** (Mac) o l'**Esplora file** (Windows, dentro la home di Ubuntu: `/home/tuonome`)
+2. Crea una nuova cartella chiamata **Progetti** (se non ce l'hai già)
+3. Dentro **Progetti**, crea un'altra cartella con il nome della tua app (es. `la-mia-app`)
 
 ### 2. Apri la cartella in VS Code
 
@@ -201,13 +269,11 @@ Crea una cartella sul tuo computer dove terrai tutti i progetti web — ad esemp
 
 ### 3. Clona il template
 
-Nel terminale di VS Code, incolla:
-
 ```bash
 git clone https://github.com/simomagazzu/create-app-like-simo.git .
 ```
 
-Questo scarica tutto il codice del template dentro la cartella che hai aperto. Il punto `.` alla fine è importante — dice a Git di scaricare qui, non in una sotto-cartella.
+Il punto `.` alla fine è importante — dice a Git di scaricare qui, non in una sotto-cartella.
 
 ### 4. Installa le dipendenze
 
@@ -215,23 +281,21 @@ Questo scarica tutto il codice del template dentro la cartella che hai aperto. I
 pnpm install
 ```
 
-Scarica tutte le librerie che il progetto usa. Durata: 1–2 minuti. Vedrai molto testo — è normale. Aspetta finché non ricompare la riga col tuo nome utente.
+Durata: 1–2 minuti. Vedrai molto testo — è normale.
 
 ### 5. Crea il file di configurazione (.env)
 
-Il file `.env` è il posto dove la tua app tiene tutte le informazioni segrete: password del database, chiavi API, impostazioni di sicurezza. Si chiama "environment" (ambiente) perché cambia a seconda di dove gira l'app — in locale sul tuo computer avrai certi valori, in produzione altri.
-
-Questo file **non viene mai caricato su GitHub** (è già escluso da `.gitignore`) — rimane solo sul tuo computer. Per questo motivo il template include un file di esempio (`env.example`) con valori segnaposto che devi copiare e poi personalizzare.
+Il file `.env` è il posto dove la tua app tiene tutte le informazioni segrete: password del database, chiavi API, impostazioni di sicurezza. Non viene mai caricato su GitHub — rimane solo sul tuo computer.
 
 ```bash
 cp env.example .env
 ```
 
-Non vedrai nessun output — è normale, il comando funziona in silenzio. Ora hai un file `.env` con valori di partenza già pronti. La guida interattiva su localhost ti accompagnerà nel riempirlo passo per passo.
+Non vedrai nessun output — il comando funziona in silenzio. La guida interattiva su localhost ti accompagnerà nel riempirlo passo per passo.
 
 ### 6. Avvia Docker Desktop
 
-Apri **Docker Desktop** dalle Applicazioni (l'hai installato nei prerequisiti). Aspetta che l'icona della balena nella barra in alto smetta di animarsi — significa che Docker è pronto.
+Apri **Docker Desktop** dalle Applicazioni. Aspetta che l'icona smetta di animarsi — significa che Docker è pronto.
 
 ### 7. Avvia il database
 
@@ -239,13 +303,13 @@ Apri **Docker Desktop** dalle Applicazioni (l'hai installato nei prerequisiti). 
 docker compose up -d
 ```
 
-Questo crea un database PostgreSQL sul tuo computer. Durata: la prima volta può richiedere 1–2 minuti (scarica i file necessari), le volte successive pochi secondi.
+La prima volta può richiedere 1–2 minuti. Le volte successive pochi secondi.
 
 ```bash
 pnpm run db:migrate
 ```
 
-Questo crea le tabelle nel database. Vedrai delle righe con i nomi delle tabelle create.
+Vedrai delle righe con i nomi delle tabelle create.
 
 ### 8. Avvia il server
 
@@ -255,7 +319,7 @@ pnpm dev
 
 Dopo qualche secondo vedrai un messaggio con `http://localhost:3000`. Apri quel link nel browser.
 
-**Trovi una guida interattiva** che ti accompagna nei passaggi rimanenti: generare la chiave segreta, configurare l'autenticazione, scegliere se usare l'AI, e collegare il repo a GitHub. Ogni step ha i comandi già pronti da copiare.
+**Trovi una guida interattiva** che ti accompagna nei passaggi rimanenti: generare la chiave segreta, configurare l'autenticazione, scegliere se usare l'AI, e collegare il repo a GitHub.
 
 > **Il server deve restare attivo.** Finché lavori al progetto, lascia il terminale con `pnpm dev` aperto. Per fermarlo: `Ctrl+C`. Per i comandi successivi, apri un **secondo terminale** in VS Code: **Terminal → New Terminal**.
 
@@ -268,16 +332,6 @@ claude
 ```
 
 Claude Code si apre nel terminale. Scrivi `/starter-prompt` per iniziare a costruire la tua app.
-
----
-
-## Il problema che questo template risolve in più
-
-Quando inizi a costruire con Claude Code, funziona benissimo. Il problema arriva dopo: più la sessione va avanti, più Claude perde il filo. Inizia a scrivere codice che contraddice quello di prima, fa refactor inutili, introduce bug che non c'erano.
-
-Questo succede perché Claude accumula troppo contesto in una sola sessione — come se dovessi ricordare ogni singola cosa che hai detto in una conversazione di ore.
-
-Questo template risolve il problema alla radice. Ogni task viene gestito in isolamento, con un contesto pulito. Claude rimane preciso e consistente dall'inizio alla fine del progetto, anche quando il codice cresce.
 
 ---
 
@@ -295,7 +349,7 @@ Scrivi `/create-spec`. Claude ti intervista sulla feature, poi genera una spec d
 
 ### Modifiche semplici
 
-Per bug, testi, stili, piccole correzioni — descrivi direttamente cosa vuoi. Claude lo fa senza bisogno di spec.
+Per bug, stili, piccole correzioni — descrivi direttamente cosa vuoi. Claude lo fa senza bisogno di spec.
 
 ### Prima del deploy
 
