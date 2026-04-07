@@ -47,7 +47,7 @@ Autenticazione, database, AI, UI e sicurezza sono già configurati. Parti subito
 | **AI** | 100+ modelli via OpenRouter |
 | **UI** | shadcn/ui + Tailwind 4 + dark mode |
 | **Sicurezza** | Rate limiting, CSP, validazione input, path traversal protection |
-| **Storage** | Locale in dev, Vercel Blob in produzione |
+| **Storage** | Locale in dev, Vercel in produzione |
 
 ---
 
@@ -325,13 +325,7 @@ Dopo qualche secondo vedrai un messaggio con `http://localhost:3000`. Apri quel 
 
 ### 9. Quando la guida è completa
 
-Tutti i check obbligatori sono verdi? Apri un nuovo terminale e scrivi:
-
-```bash
-claude
-```
-
-Claude Code si apre nel terminale. Scrivi `/starter-prompt` per iniziare a costruire la tua app.
+Tutti i check obbligatori sono verdi? Apri la chat di Claude su VSCODE e scrivi: `/starter-prompt` per iniziare a costruire la tua app.
 
 ---
 
@@ -345,11 +339,7 @@ Al termine ti ritrovi con la tua app funzionante. Rivedi le modifiche, committi 
 
 ### Aggiungere una feature
 
-Scrivi `/create-spec`. Claude ti intervista sulla feature, poi genera una spec dettagliata con tutte le decisioni tecniche. Quando la spec è pronta, scrivi `/continue-feature` per costruire tutto in automatico.
-
-### Modifiche semplici
-
-Per bug, stili, piccole correzioni — descrivi direttamente cosa vuoi. Claude lo fa senza bisogno di spec.
+Scrivi `/create-spec`. Claude ti intervista sulla feature, poi genera una spec dettagliata con tutte le decisioni tecniche. Quando la spec è pronta, scrivi `/continue-feature` per costruire tutto in automatico. Per Per bug, stili, piccole correzioni o feature semplici, descrivi direttamente cosa vuoi. Claude lo fa senza bisogno di spec.
 
 ### Prima del deploy
 
@@ -363,12 +353,6 @@ Per bug, stili, piccole correzioni — descrivi direttamente cosa vuoi. Claude l
 2. Importa su [Vercel](https://vercel.com)
 3. Aggiungi le variabili d'ambiente di produzione
 4. Database in produzione: [Neon](https://neon.tech) ha un tier gratuito
-
----
-
-## Supporto
-
-Hai problemi con il setup o domande sul progetto? Scrivimi.
 
 ---
 
