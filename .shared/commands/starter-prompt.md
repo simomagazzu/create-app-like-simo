@@ -47,9 +47,102 @@ Record all answers — they feed directly into the `## Design System` and `## Ke
 
 ---
 
-## Phase 2.5: Generate Starter Prompt Document
+## Phase 2.5: Generate Project Design Documents
 
-Create `docs/business/` if it doesn't exist: `mkdir -p docs/business`
+This phase produces **two** files:
+1. `DESIGN.md` at the project root — the source of truth for aesthetic direction (read by the `frontend-design` skill on every UI task).
+2. `docs/business/starter-prompt.md` — full project context for any future agent session.
+
+Create both folders if needed: `mkdir -p docs/business`
+
+### File 1: `DESIGN.md` (project root)
+
+Write to `DESIGN.md` using the design deep-dive answers. This file is consumed by the `frontend-design` skill's Step 0 — its presence prevents the skill from falling back to "ask the user" every UI session.
+
+```markdown
+# Design Direction — {App Name}
+
+> Source of truth for the project's aesthetic. The `frontend-design` skill reads this on every UI task.
+
+## Aesthetic direction
+
+**{One of: Editorial / Brutalist / Technical-Utility / Maximalist / Soft-Tactile / Retro-futuristic / Playful}**
+
+{One paragraph explaining the choice: what this aesthetic looks like applied to THIS app specifically. Not generic — tied to the app's domain and audience. Reference 1-2 apps from the interview that exemplify the direction.}
+
+## Reference apps
+
+- {App name or URL — what to emulate}
+- {App name or URL — what to emulate}
+- {App name or URL — what to emulate}
+
+## Typography
+
+**Heading**: {font name + reasoning — e.g. "Fraunces 600 — slight serif tension, signals editorial seriousness without feeling stuffy"}
+**Body**: {font name + reasoning — e.g. "Geist — neutral utility face that lets the headings carry the personality"}
+**Mono** (if used): {font name — e.g. "JetBrains Mono for inline code and numerical data"}
+**Pairing rationale**: {why these two work together — contrast in serif/sans, weight difference, mood difference}
+
+**Scale**: {tight / default / loose} · heading-to-body ratio: {e.g. "5x — h1 at 4rem, body at 0.875rem"}
+**Tracking**: {tight / default — applied to which elements}
+**Tabular numerals**: {required for tables and stat cards / not needed}
+
+## Color story
+
+**Mode**: {dark / light / system — defaults to {x}}
+**Accent**: {hex or oklch — used for the single most important action per screen}
+**Off-black**: {hex — never `#000000`}
+**Off-white**: {hex — never `#FFFFFF`}
+**Surfaces**: {how cards, panels, and layered elements differentiate from background}
+**Semantic colors** (success, warning, destructive): {brief — keep in line with aesthetic}
+
+These map to the variables in `src/app/globals.css` (`@theme` block) — update those values to match this story.
+
+## Motion personality
+
+**Character**: {e.g. "Deliberate restraint. Most things don't animate at all. The few things that do, do so decisively."}
+
+**Named easings** (defined in `globals.css`):
+- `ease-snap` — {when to use: e.g. "primary action hovers, button presses, micro-feedback"}
+- `ease-settle` — {when to use: e.g. "things landing on screen — modals, page transitions, dropdown reveal"}
+- `ease-drift` — {when to use: e.g. "ambient/decorative motion, never on primary interactions"}
+
+**Stagger**: {e.g. "list items appearing together stagger by 40ms"}
+**Reduced motion**: respected globally via `@media (prefers-reduced-motion)`.
+
+## Layout personality
+
+**Composition rule**: {e.g. "asymmetric — content is offset from page center, never perfectly balanced"}
+**Density**: {compact / balanced / spacious}
+**Default page max-width**: {e.g. "max-w-6xl"}
+**Spacing scale**: {tight / default / generous}
+**Whitespace philosophy**: {e.g. "generous around primary content, tight around secondary"}
+
+## Tone of voice
+
+{2-3 sentences describing how copy should read. Specific examples are better than adjectives.}
+- {Example phrase that fits} ✓
+- {Example phrase that does NOT fit} ✗
+
+## Anti-patterns for this app
+
+The `frontend-design` skill bans many slop patterns globally. This section adds project-specific bans:
+
+- {e.g. "Do not use emoji in UI copy — they break the editorial tone"}
+- {e.g. "Do not use card grids on the dashboard — use the asymmetric two-column composition instead"}
+- {e.g. "Never blue accents — this brand uses warm tones only"}
+
+## Component customizations required
+
+shadcn primitives ship neutral. The following must have an aesthetic-aligned variant before they're considered done:
+
+- **Button**: {e.g. "primary uses the accent color with no rounded corners; secondary is text-only with underline on hover"}
+- **Card**: {e.g. "no shadow, single hairline border, slight asymmetric internal padding"}
+- **Input**: {e.g. "underline-only, no enclosed border"}
+- {add others as needed}
+```
+
+### File 2: `docs/business/starter-prompt.md`
 
 Write `docs/business/starter-prompt.md` using everything gathered in the interview:
 
@@ -120,7 +213,7 @@ Write `docs/business/starter-prompt.md` using everything gathered in the intervi
 {third-party services used, or "None"}
 
 ## Tech Stack
-Next.js 16 · React 19 · TypeScript · Better Auth · PostgreSQL + Drizzle ORM · shadcn/ui · Tailwind 4{· OpenRouter}{· Resend}
+Next.js 16 · React 19 · TypeScript · Better Auth · PostgreSQL via Docker (local) + managed Postgres (production) + Drizzle ORM · shadcn/ui · Tailwind 4{· OpenRouter}{· Resend}
 
 ---
 
@@ -132,6 +225,7 @@ This project was scaffolded from Simo's Agentic Coding Boilerplate. Important ru
   - `/` — interactive setup wizard (replace with the actual landing page once setup is complete)
   - `/dashboard` — placeholder dashboard (replace with the real app dashboard)
 - Read `src/lib/schema.ts` to understand the data model before any database work.
+- Read `DESIGN.md` at the project root before any UI work — it is the source of truth for the app's visual direction.
 - Check `specs/{feature-name}/` for implementation decisions and task status.
 - Follow all conventions in `AGENTS.md`.
 - Use `src/lib/api-utils.ts` helpers for all API routes (applyRateLimit, requireApiAuth, parseBody, apiResponse, apiError).
@@ -181,7 +275,7 @@ Format it as:
 >
 > Does this match your vision, or should I adjust anything before I start?
 
-**Wait for explicit approval.** If the user says "looks good" or equivalent, proceed to Phase 4. If they request changes, update `docs/business/starter-prompt.md` to reflect them before building.
+**Wait for explicit approval.** If the user says "looks good" or equivalent, proceed to Phase 4. If they request changes, update **both** `DESIGN.md` AND `docs/business/starter-prompt.md` to reflect them before building. (DESIGN.md is the source of truth that the `frontend-design` skill reads on every UI task — it must stay in sync with what was approved.)
 
 ---
 
@@ -263,6 +357,8 @@ Search the codebase for any remaining boilerplate references and remove them:
 - Links to `simomagazzu/create-app-like-simo`
 - Comments referencing "boilerplate" or "template" in code that was newly written
 - The setup wizard at `/` — it should have been replaced by the actual landing page during the build
+
+**Do NOT delete**: `DESIGN.md` at the project root — that is now part of the app's identity, not boilerplate scaffolding. The `frontend-design` skill reads it on every UI task.
 
 ### 3. Update `AGENTS.md` header
 

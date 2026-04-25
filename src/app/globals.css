@@ -40,6 +40,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Named motion easings — used by frontend-design skill.
+     Override these per-project in DESIGN.md → globals.css to match aesthetic. */
+  --ease-snap: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drift: cubic-bezier(0.4, 0, 0.6, 1);
 }
 
 :root {

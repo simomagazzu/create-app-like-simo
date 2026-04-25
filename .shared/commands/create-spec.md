@@ -21,7 +21,16 @@ Ask these in order, 2-3 at a time. Every question must be answered before genera
 1. **What does the app do?** (one sentence — what problem does it solve?)
 2. **Who uses it?** (who are the users, are there different roles with different access?)
 3. **What are the 3-5 most important things a user can do?** (core features — be specific, push back on vague answers like "a dashboard")
-4. **Accounts and login**: does the app require users to sign in? If yes: email/password, Google, or both? Can anyone sign up, or is access invite-only? What does a user see right after they log in for the first time?
+4. **Accounts and login**: does the app require users to sign in? **You must explicitly ask this** — never assume. If yes, ask which method(s) — multiple can be combined:
+   - **Email + password** (classic)
+   - **Magic link** (passwordless, click-a-link from email)
+   - **Email OTP** (one-time code via email)
+   - **Google OAuth** (one-click "Continue with Google")
+   - **No authentication** (public app, anyone can use it without signing in)
+
+   The boilerplate's Better Auth setup supports all of the above out of the box. If the user picks any email-based method (password, magic link, OTP), Resend is required for sending emails — flag this as an action-required item.
+
+   Then: can anyone sign up, or is access invite-only? What does a user see right after they log in for the first time?
 5. **What data does the app store?** (think about the main database tables — what are the key entities and how do they relate?)
 6. **Walk me through the key screens**: what does someone see when they first visit the app (before logging in)? Is there a public landing page, or does it go straight to login? Then walk through the main pages once logged in — what's on each one?
 7. **Design and feel**: how do you want this app to look and feel? Think of apps or websites whose design you love — what appeals to you about them? Are you thinking minimal and clean, bold and expressive, professional, playful, premium? Dark mode, light mode, or both? Any specific colors, fonts, or branding in mind? If you have no preference, say so and we'll choose something great.
@@ -35,6 +44,21 @@ Ask these in order, 2-3 at a time. Every question must be answered before genera
 - What's the MVP — the minimum that makes this useful — vs nice-to-have features?
 - Does it need real-time updates (live data, notifications)?
 - Is there file uploading involved?
+
+### Default infrastructure assumptions — DO NOT ask about these
+
+The boilerplate ships with opinionated defaults. Assume them silently. Only ask if the user volunteers a different need (e.g. "I want MySQL", "we already have Supabase set up", "no email — too expensive to run").
+
+| Concern | Default — assume this | When to ask |
+|---|---|---|
+| **Database** | PostgreSQL. **Local development = Docker** (boilerplate ships with `docker-compose.yml` running Postgres on port 5432 by default). **Production = managed Postgres** (e.g. Neon, Supabase, Vercel Postgres) — flag in `action-required.md` so the user provisions one before deploy. | User mentions a different DB engine, or already has hosted infra. |
+| **ORM** | Drizzle (already configured in `src/lib/db.ts` and `src/lib/schema.ts`). | Never. |
+| **Auth** | Better Auth (handles email+password, magic link, OTP, Google OAuth — see Q4). | Q4 already covers method choice. |
+| **AI** | OpenRouter via Vercel AI SDK (only if Q8 is yes). | If user asks for a specific model provider. |
+| **Email** | Resend (only if Q4 picks an email-based auth method, or other transactional email is needed). | If user names a different ESP. |
+| **File storage** | Local filesystem in dev, Vercel Blob in production (already wired in `src/lib/storage.ts`). | If user mentions S3/R2/etc. |
+
+When generating `action-required.md` later, the production database is the one item from this table that always needs the user's attention before deploy — list a managed Postgres provider as an action item unless the user already named one during the interview.
 
 ### Interview Rules
 
@@ -217,7 +241,9 @@ Path: `specs/{feature-name}/` (kebab-case)
 {List of main pages/views with a one-line description of what each contains}
 
 ## Design Direction
-{Aesthetic direction — color palette, typography feel, dark/light mode, tone (minimal/bold/premium/playful), motion and animation intent, any reference apps or brands. If the user had no preference, state the direction chosen and why.}
+{If `DESIGN.md` exists at the project root: write "See `DESIGN.md` for the project-wide aesthetic direction. Feature-specific notes:" then list anything ONLY relevant to this feature (e.g. a special table layout, a unique empty-state illustration, an interaction pattern not yet in DESIGN.md). Do not duplicate DESIGN.md's content.}
+
+{If `DESIGN.md` does NOT exist: state the full aesthetic direction inline — pick one from the seven directions in the `frontend-design` skill (Editorial / Brutalist / Technical-Utility / Maximalist / Soft-Tactile / Retro-futuristic / Playful), describe color, typography, motion, and reference apps. Do not use banned tone words ("minimal", "clean", "premium", "modern", "sleek").}
 
 ## AI Integration
 {How AI is used, what it does, when it runs — or "None" if not applicable}

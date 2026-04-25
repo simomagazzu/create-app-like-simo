@@ -104,10 +104,15 @@ Also load these phase-specific files:
 
 Include this section only when the task involves building any visible UI (pages, components, layouts, dialogs).
 
-The orchestrator must extract the `## Design Direction` section from `specs/{feature-name}/requirements.md` and embed it verbatim below.
+The orchestrator must build the design direction text by combining two sources, in this order:
+
+1. **`DESIGN.md` at the project root** (if it exists): paste it verbatim. This is the project-wide aesthetic contract.
+2. **The `## Design Direction` section from `specs/{feature-name}/requirements.md`**: paste it after DESIGN.md (it may add feature-specific notes or stand alone if DESIGN.md doesn't exist).
 
 ```
 ## Design Direction
+
+{paste the contents of DESIGN.md verbatim if it exists}
 
 {paste the ## Design Direction section from requirements.md verbatim}
 
