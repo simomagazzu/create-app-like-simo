@@ -53,7 +53,12 @@ Autenticazione, database, AI, UI e sicurezza sono già configurati. Parti subito
 
 ---
 
-## Prerequisiti (una tantum)
+<details>
+<summary><b>📦 Prima installazione (una tantum) — clicca per espandere</b></summary>
+
+<br>
+
+> **Da fare una sola volta nella vita**, mai più. Se hai già configurato il tuo computer per un progetto precedente, salta direttamente a [Come iniziare](#come-iniziare) qui sotto.
 
 Questi strumenti vanno installati **una sola volta**. Una volta completato questo setup, non dovrai più rifarlo — né per questo progetto né per quelli futuri.
 
@@ -262,6 +267,8 @@ Verifica con `claude --version`.
 > *"Sto configurando un progetto Node.js su [Mac / Windows con WSL]. Ho eseguito questo comando: `[incolla il comando]` e ho ottenuto questo errore: `[incolla l'errore]`. Mi guidi passo passo per risolverlo?"*
 
 > **Tutto installato?** Questi passaggi non dovrai più ripeterli. Da qui in poi, ogni volta che vuoi lavorare al progetto ti basta aprire il terminale e Docker Desktop.
+
+</details>
 
 ---
 
