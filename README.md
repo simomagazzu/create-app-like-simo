@@ -2,7 +2,7 @@
 
 Un template Next.js per costruire web app moderne con un agente AI, con una struttura guidata che ti permette di lavorare con gli stessi strumenti dei developer senza dover partire da zero.
 
-> Le istruzioni qui sotto usano **Claude Code** — è l'agente AI per cui questo template è stato pensato e testato. Se preferisci **OpenAI Codex** o **Cursor Composer**, vedi la sezione [Alternative all'agente AI](#alternative-allagente-ai) in fondo al README.
+> Funziona con **Claude Code** (consigliato), **OpenAI Codex**, o **Cursor Composer**. La scelta si fa nei prerequisiti — i passi 7 e 8 (Mac) o 6 e 7 (Windows) hanno menù a tendina con le istruzioni per ciascuna opzione.
 
 ---
 
@@ -140,11 +140,18 @@ Ti chiederà la password del Mac. Verifica con `pnpm --version`.
 
 Verifica nel terminale: `docker --version`
 
-#### 7. Visual Studio Code
+#### 7. Editor di codice
 
-**Cos'è**: l'editor dove vedrai e modificherai il codice. È gratuito ed è lo standard usato dalla maggior parte dei developer.
+**Cos'è**: l'editor dove vedrai e modificherai il codice.
 
-> **Vuoi usare Cursor invece di VS Code?** Cursor è un editor alternativo (basato su VS Code) che include il proprio agente AI integrato. Se hai già deciso di usare Cursor: **non installare VS Code** — scarica Cursor da [cursor.com](https://cursor.com) e continua a usarlo come editor per il resto delle istruzioni (clona il progetto, apri il terminale integrato, ecc. funzionano allo stesso modo). Salta anche il passaggio 8 (Claude Code CLI) e vedi [Alternative all'agente AI](#alternative-allagente-ai). Non installare entrambi.
+Hai due opzioni — espandi quella che vuoi usare. **Non installare entrambi.**
+
+<details>
+<summary><b>VS Code</b> (consigliato — è quello su cui questo template è stato sviluppato)</summary>
+
+<br>
+
+VS Code è gratuito ed è lo standard usato dalla maggior parte dei developer.
 
 1. Vai su [code.visualstudio.com](https://code.visualstudio.com/)
 2. Scarica, apri il `.dmg`, trascina nella cartella Applicazioni
@@ -156,7 +163,7 @@ Verifica nel terminale: `docker --version`
 5. Cerca **"Claude Code"** nella barra di ricerca
 6. Clicca **Install** sull'estensione di Anthropic
 
-> Preferisci usare **Codex** invece di Claude? Installa lo stesso VS Code, ma sostituisci l'estensione Claude con quella OpenAI Codex. Vedi [Alternative all'agente AI](#alternative-allagente-ai) per i dettagli.
+> Preferisci usare **Codex** invece di Claude? Sostituisci l'estensione Claude Code con quella **OpenAI Codex** (cerca "Codex" nel marketplace). Il resto delle istruzioni VS Code rimane identico.
 
 **Il terminale dentro VS Code**:
 
@@ -164,11 +171,41 @@ VS Code ha un terminale integrato — funziona esattamente come il Terminale del
 
 7. Apri il terminale integrato: menu **Terminal → New Terminal** (oppure `` Ctrl + ` ``)
 
-Da questo momento puoi usare questo terminale per tutti i comandi del progetto.
+Da questo momento puoi usare questo terminale per tutti i comandi del progetto. **Continua al passo 8** per installare l'agente AI.
 
-#### 8. Claude Code (l'agente AI)
+</details>
 
-**Cos'è**: l'AI che costruirà la tua app insieme a te. Tu descrivi cosa vuoi, Claude scrive il codice.
+<details>
+<summary><b>Cursor</b> (alternativa — include l'agente AI integrato, ma serve un piano a pagamento)</summary>
+
+<br>
+
+Cursor è un editor basato su VS Code che include il proprio agente AI (Composer). **Sostituisce VS Code completamente** — non si installano entrambi.
+
+> **⚠️ Requisito**: per usare Composer (l'agente AI di Cursor) serve un piano [Cursor Pro](https://cursor.com/pricing) **a pagamento**. Il tier gratuito di Cursor non include Composer.
+
+1. Vai su [cursor.com](https://cursor.com) e scarica Cursor per Mac
+2. Apri il file `.dmg`, trascina Cursor nella cartella Applicazioni
+3. Apri Cursor e fai login con un account che abbia il piano Pro
+
+**Il terminale dentro Cursor**: identico a VS Code. Apri con menu **Terminal → New Terminal** (oppure `` Ctrl + ` ``).
+
+**Importante**: Composer è già integrato — **salta direttamente al passo 9** (Come iniziare). Non devi fare il passo 8 (l'agente AI da terminale).
+
+</details>
+
+#### 8. L'agente AI da terminale
+
+> **Hai scelto Cursor al passo 7?** **Salta questo passaggio.** Cursor ha già Composer integrato — non serve installare nient'altro.
+
+**Cos'è**: l'AI che costruirà la tua app insieme a te. Tu descrivi cosa vuoi, l'agente scrive il codice.
+
+Hai due opzioni — espandi quella che vuoi usare:
+
+<details>
+<summary><b>Claude Code</b> (consigliato — è quello su cui il template è stato testato)</summary>
+
+<br>
 
 Serve uno di questi per usarlo: un piano [Anthropic Max o Pro](https://claude.ai), una [API key Anthropic](https://console.anthropic.com/), oppure un accesso tramite team o azienda.
 
@@ -180,7 +217,33 @@ sudo npm install -g @anthropic-ai/claude-code
 
 Durata: circa 30 secondi. Verifica con `claude --version`.
 
-> Vuoi usare Codex o Cursor invece? Salta questo passaggio e vedi [Alternative all'agente AI](#alternative-allagente-ai).
+</details>
+
+<details>
+<summary><b>OpenAI Codex</b> (alternativa)</summary>
+
+<br>
+
+Serve un abbonamento [ChatGPT Plus/Pro/Business](https://openai.com/chatgpt/pricing/) oppure una [API key OpenAI](https://platform.openai.com/api-keys).
+
+> Assicurati di aver installato l'estensione **OpenAI Codex** (non Claude Code) al passo 7.
+
+Nel terminale di VS Code:
+
+```bash
+sudo npm install -g @openai/codex
+```
+
+Verifica con `codex --version`.
+
+**Limite noto**: alcune versioni di Codex non riconoscono i comandi custom come `/starter-prompt`. Se al passo 9 Codex risponde "comando sconosciuto":
+- Apri il file [`.shared/commands/starter-prompt.md`](.shared/commands/starter-prompt.md)
+- Copia tutto il contenuto
+- Incollalo nella chat di Codex come messaggio normale
+
+Lo stesso fallback vale per `/create-spec`, `/continue-feature`, ecc.
+
+</details>
 
 ---
 
@@ -234,19 +297,57 @@ Verifica con `pnpm --version`.
 
 Verifica nel terminale Ubuntu: `docker --version`
 
-#### 6. Visual Studio Code
+#### 6. Editor di codice
 
-> **Vuoi usare Cursor invece di VS Code?** Se hai già deciso di usare Cursor: **non installare VS Code** — scarica Cursor per Windows da [cursor.com](https://cursor.com) e continua a usarlo come editor per il resto delle istruzioni. Salta anche il passaggio 7 (Claude Code CLI) e vedi [Alternative all'agente AI](#alternative-allagente-ai). Non installare entrambi.
+Hai due opzioni — espandi quella che vuoi usare. **Non installare entrambi.**
+
+<details>
+<summary><b>VS Code</b> (consigliato — è quello su cui questo template è stato sviluppato)</summary>
+
+<br>
 
 1. Scarica VS Code per Windows da [code.visualstudio.com](https://code.visualstudio.com/)
 2. Installa l'estensione **WSL** (cerca "WSL" nel marketplace delle estensioni) — ti permette di aprire cartelle Linux dentro VS Code
 3. Installa l'estensione **Claude Code** (cerca "Claude Code" nel marketplace)
 
-Per aprire il terminale integrato: menu **Terminal → New Terminal** (oppure `` Ctrl + ` ``). Assicurati che il terminale sia Ubuntu/WSL, non PowerShell.
+> Preferisci usare **Codex** invece di Claude? Sostituisci l'estensione Claude Code con quella **OpenAI Codex** (cerca "Codex" nel marketplace). Il resto delle istruzioni VS Code rimane identico.
 
-> Preferisci usare **Codex** invece di Claude? Installa lo stesso VS Code, ma sostituisci l'estensione Claude con quella OpenAI Codex. Vedi [Alternative all'agente AI](#alternative-allagente-ai) per i dettagli.
+Per aprire il terminale integrato: menu **Terminal → New Terminal** (oppure `` Ctrl + ` ``). **Assicurati che il terminale sia Ubuntu/WSL, non PowerShell.**
 
-#### 7. Claude Code
+**Continua al passo 7** per installare l'agente AI.
+
+</details>
+
+<details>
+<summary><b>Cursor</b> (alternativa — include l'agente AI integrato, ma serve un piano a pagamento)</summary>
+
+<br>
+
+Cursor è un editor basato su VS Code che include il proprio agente AI (Composer). **Sostituisce VS Code completamente** — non si installano entrambi.
+
+> **⚠️ Requisito**: per usare Composer serve un piano [Cursor Pro](https://cursor.com/pricing) **a pagamento**. Il tier gratuito di Cursor non include Composer.
+
+1. Scarica Cursor per Windows da [cursor.com](https://cursor.com)
+2. Installa Cursor seguendo l'installer
+3. Installa l'estensione **WSL** dentro Cursor (cerca "WSL" nel marketplace) — ti permette di aprire cartelle Linux dentro Cursor
+4. Apri Cursor e fai login con un account che abbia il piano Pro
+
+Per aprire il terminale integrato: menu **Terminal → New Terminal**. Assicurati che sia Ubuntu/WSL, non PowerShell.
+
+**Importante**: Composer è già integrato — **salta direttamente al passo 8** (Come iniziare, all'inizio della prossima sezione). Non devi fare il passo 7 (l'agente AI da terminale).
+
+</details>
+
+#### 7. L'agente AI da terminale
+
+> **Hai scelto Cursor al passo 6?** **Salta questo passaggio.** Cursor ha già Composer integrato — non serve installare nient'altro.
+
+Hai due opzioni — espandi quella che vuoi usare:
+
+<details>
+<summary><b>Claude Code</b> (consigliato — è quello su cui il template è stato testato)</summary>
+
+<br>
 
 Serve uno di questi: un piano [Anthropic Max o Pro](https://claude.ai), una [API key Anthropic](https://console.anthropic.com/), oppure un accesso tramite team o azienda.
 
@@ -258,7 +359,28 @@ sudo npm install -g @anthropic-ai/claude-code
 
 Verifica con `claude --version`.
 
-> Vuoi usare Codex o Cursor invece? Salta questo passaggio e vedi [Alternative all'agente AI](#alternative-allagente-ai).
+</details>
+
+<details>
+<summary><b>OpenAI Codex</b> (alternativa)</summary>
+
+<br>
+
+Serve un abbonamento [ChatGPT Plus/Pro/Business](https://openai.com/chatgpt/pricing/) oppure una [API key OpenAI](https://platform.openai.com/api-keys).
+
+> Assicurati di aver installato l'estensione **OpenAI Codex** (non Claude Code) al passo 6.
+
+Nel terminale Ubuntu:
+
+```bash
+sudo npm install -g @openai/codex
+```
+
+Verifica con `codex --version`.
+
+**Limite noto**: alcune versioni di Codex non riconoscono i comandi custom come `/starter-prompt`. Se Codex risponde "comando sconosciuto", apri il file [`.shared/commands/starter-prompt.md`](.shared/commands/starter-prompt.md), copia il contenuto e incollalo come messaggio normale. Lo stesso vale per gli altri comandi.
+
+</details>
 
 ---
 
@@ -348,21 +470,15 @@ Dopo qualche secondo vedrai un messaggio con `http://localhost:3000`. Apri quel 
 
 ### 9. Quando la guida è completa
 
-Tutti i check obbligatori sono verdi? Apri un nuovo terminale in VS Code, scrivi:
+Tutti i check obbligatori sono verdi? Avvia il tuo agente AI:
 
-```bash
-claude
-```
+| Se hai installato | Apri così | Poi dentro l'agente scrivi |
+|---|---|---|
+| **Claude Code** | apri un nuovo terminale in VS Code e scrivi `claude` | `/starter-prompt` |
+| **OpenAI Codex** | apri un nuovo terminale in VS Code e scrivi `codex` | `/starter-prompt` |
+| **Cursor Composer** | premi `Cmd + I` (Mac) o `Ctrl + I` (Windows) dentro Cursor | `/starter-prompt` |
 
-Poi dentro Claude scrivi:
-
-```
-/starter-prompt
-```
-
-Claude ti farà una serie di domande su cosa vuoi costruire (chi userà l'app, quali sono le feature principali, che design vuoi) e poi creerà la tua app automaticamente.
-
-> Stai usando Codex o Cursor? Vedi [Alternative all'agente AI](#alternative-allagente-ai) per i comandi equivalenti.
+L'agente ti farà una serie di domande su cosa vuoi costruire (chi userà l'app, quali sono le feature principali, che design vuoi) e poi creerà la tua app automaticamente.
 
 ---
 
@@ -388,63 +504,16 @@ Per bug, testi, stili, piccole correzioni — descrivi direttamente cosa vuoi. L
 
 ---
 
-## Alternative all'agente AI
+## Cosa funziona allo stesso modo per ogni agente
 
-Le istruzioni principali del README usano **Claude Code** perché è l'agente con cui questo template è stato sviluppato e testato. Se preferisci un altro agente, qui trovi tutto quello che ti serve per sostituirlo. Il resto delle istruzioni (Docker, database, server, guida interattiva) rimane identico.
-
-### OpenAI Codex
-
-**Cos'è**: l'agente AI di OpenAI da terminale. Funziona in modo simile a Claude Code.
-
-**Come usarlo:**
-
-1. Salta il passaggio "Claude Code" nei prerequisiti.
-2. Installa Codex (al posto di Claude Code):
-   ```bash
-   sudo npm install -g @openai/codex
-   ```
-   Serve un abbonamento [ChatGPT Plus/Pro/Business](https://openai.com/chatgpt/pricing/) oppure una [API key OpenAI](https://platform.openai.com/api-keys).
-3. Quando il README ti dice di scrivere `claude` nel terminale, scrivi invece:
-   ```bash
-   codex
-   ```
-4. Una volta dentro Codex, scrivi `/starter-prompt` come faresti con Claude.
-
-**Limite noto**: alcune versioni di Codex non riconoscono i comandi custom come `/starter-prompt`. Se Codex risponde "comando sconosciuto":
-- Apri il file [`.shared/commands/starter-prompt.md`](.shared/commands/starter-prompt.md)
-- Copia tutto il contenuto
-- Incollalo nella chat di Codex come messaggio normale
-
-L'agente seguirà comunque le istruzioni del comando. Lo stesso vale per `/create-spec`, `/continue-feature`, ecc.
-
-### Cursor Composer
-
-**Cos'è**: un editor di codice (alternativa a VS Code) con un agente AI integrato. **Sostituisce** VS Code — non si usano insieme.
-
-**Come usarlo:**
-
-1. **Non installare VS Code.** Cursor sostituisce VS Code completamente.
-2. **Non installare Claude Code CLI.** Composer (l'agente AI di Cursor) è già integrato dentro Cursor.
-3. Scarica **Cursor** da [cursor.com](https://cursor.com) e installalo (procedura identica a VS Code).
-4. Tutti i passaggi del README che parlano di "VS Code" si applicano a Cursor allo stesso modo: aprire una cartella (`File → Open Folder`), aprire il terminale integrato (`Terminal → New Terminal`), eseguire `pnpm install`, ecc.
-5. Quando il README dice di aprire Claude e scrivere `/starter-prompt`, fai invece così:
-   - Premi `Cmd + I` (Mac) o `Ctrl + I` (Windows) dentro Cursor → si apre Composer.
-   - In Composer scrivi `/starter-prompt`.
-
-Cursor 2.0 supporta i comandi custom (`/starter-prompt`, `/create-spec`, ecc.) direttamente — normalmente funziona "out of the box". Se per qualche motivo non li riconosce, vale lo stesso fallback descritto sopra per Codex (apri il file del comando in `.shared/commands/`, copia il contenuto, incolla in Composer).
-
-Cursor ha un piano gratuito per iniziare; per un uso continuativo serve un abbonamento.
-
-### Cosa NON cambia
-
-Per qualsiasi agente AI tu scelga, queste cose restano identiche:
+L'editor (VS Code o Cursor) e l'agente AI (Claude Code, Codex, o Composer) sono i soli passaggi che cambiano. Tutto il resto è identico — la stessa app, gli stessi comandi, la stessa guida:
 
 - I comandi `pnpm install`, `docker compose up -d`, `pnpm dev`, ecc.
 - La guida interattiva su `localhost:3000`
 - I comandi del progetto: `/starter-prompt`, `/create-spec`, `/continue-feature`, `/security-audit`, `/deploy-check`
 - Il file `AGENTS.md` (che Claude legge come `CLAUDE.md`, Codex come `AGENTS.md`, Cursor come regole interne)
 
-Per maggiori dettagli su differenze e limiti per ciascun agente, vedi [`docs/agent-runtimes/`](docs/agent-runtimes/).
+Per dettagli tecnici su differenze e limiti per ciascun agente, vedi [`docs/agent-runtimes/`](docs/agent-runtimes/).
 
 ---
 
